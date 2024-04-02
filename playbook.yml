@@ -1,0 +1,24 @@
+---
+- name: Deploy Open Source App and Configure Apache
+  hosts: ALTASS_ubuntu_node, ALTASS_centos_node, ALTASS_kali_node
+  become: true
+  vars:
+    app_repository: https://github.com/JSPGARBA/laravel-realworld-example-app.githttps://github.com/JSPGARBA/laravel-realworld-example-app.git
+    apache_port: 80  # Default Apache port
+    timezone: Africa/Lagos  
+  tasks:
+    - name: Install Apache
+      package:
+        name: apache2
+        state: present
+      when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'CentOS'
+
+    
+
+    - name: Copy index.php file
+      template:
+        src: index.php.j2
+        dest: /var/www/html/index.php
+      when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'CentOS'
+
+    
